@@ -9,11 +9,11 @@
         </div>
       </div>
       <div class="col-12 bg-dark d-flex justify-content-between my-3">
-        <button class="btn btn-warning fw-bold fs-4">Concert</button>
-        <button class="btn btn-warning fw-bold fs-4">Convention</button>
-        <button class="btn btn-warning fw-bold fs-4">Sport</button>
-        <button class="btn btn-warning fw-bold fs-4">Digital</button>
-        <button class="btn btn-warning fw-bold fs-4">All</button>
+        <button @click="filterBy = 'concert'" class="btn btn-warning fw-bold fs-4 p-2">Concert</button>
+        <button @click="filterBy = 'convention'" class="btn btn-warning fw-bold fs-4 p-2">Convention</button>
+        <button @click="filterBy = 'sport'" class="btn btn-warning fw-bold fs-4 p-2">Sport</button>
+        <button @click="filterBy = 'digital'" class="btn btn-warning fw-bold fs-4 p-2">Digital</button>
+        <button @click="filterBy = ''" class="btn btn-warning fw-bold fs-4 p-2">All</button>
       </div>
     </div>
     <div class="row">
@@ -28,12 +28,13 @@
 import { logger } from "../utils/Logger.js";
 import { eventsService } from "../services/EventsService.js"
 import Pop from "../utils/Pop.js";
-import { onMounted, computed } from "vue";
+import { onMounted, computed, ref } from "vue";
 import { AppState } from "../AppState.js";
 import EventCard from "../components/EventCard.vue"
 
 export default {
   setup() {
+    const filterBy = ref('')
     async function getEvents() {
       try {
         await eventsService.getEvents()
@@ -47,7 +48,14 @@ export default {
       getEvents()
     })
     return {
-      event: computed(() => AppState.events)
+      filterBy,
+      event: computed(() => {
+        if (filterBy.value == '') {
+          return AppState.events
+        } else {
+          return AppState.events.filter(e => e.type == filterBy.value)
+        }
+      })
     }
   }
 }
