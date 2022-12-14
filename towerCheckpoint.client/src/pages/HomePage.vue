@@ -1,11 +1,25 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 bg-white rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo"
-        class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
+  <div class="container-fluid bg-dark">
+    <div class="row">
+      <div class="col-12 d-flex cover-img justify-content-start align-items-center border ">
+        <div class="mx-3">
+          <h3 class="text-light">Get Ahead Of The Scalpers</h3>
+          <h3 class="text-light">Reserve Your Seat Now</h3>
+          <h3 class="text-light">Real Events For Real People</h3>
+        </div>
+      </div>
+      <div class="col-12 bg-dark d-flex justify-content-between my-3">
+        <button class="btn btn-warning fw-bold fs-4">Concert</button>
+        <button class="btn btn-warning fw-bold fs-4">Convention</button>
+        <button class="btn btn-warning fw-bold fs-4">Sport</button>
+        <button class="btn btn-warning fw-bold fs-4">Digital</button>
+        <button class="btn btn-warning fw-bold fs-4">All</button>
+      </div>
+    </div>
+    <div class="row">
+      <div v-for="e in event" class="col-3 bg-dark text-start border">
+        <EventCard :event="e" />
+      </div>
     </div>
   </div>
 </template>
@@ -14,8 +28,9 @@
 import { logger } from "../utils/Logger.js";
 import { eventsService } from "../services/EventsService.js"
 import Pop from "../utils/Pop.js";
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 import { AppState } from "../AppState.js";
+import EventCard from "../components/EventCard.vue"
 
 export default {
   setup() {
@@ -31,29 +46,19 @@ export default {
     onMounted(() => {
       getEvents()
     })
-    return {}
+    return {
+      event: computed(() => AppState.events)
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.home {
-  display: grid;
-  height: 80vh;
-  place-content: center;
-  text-align: center;
-  user-select: none;
-
-  .home-card {
-    width: 50vw;
-
-    >img {
-      height: 200px;
-      max-width: 200px;
-      width: 100%;
-      object-fit: contain;
-      object-position: center;
-    }
-  }
+.cover-img {
+  width: 100%;
+  height: 50vh;
+  background-position: center;
+  object-fit: cover;
+  background-image: url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');
 }
 </style>
