@@ -17,7 +17,7 @@ class EventsService {
   }
 
   async createEvent(body) {
-    const res = await api.post('api/events', body)
+    const res = await api.post('api/events/', body)
     AppState.events.push(res.data)
     return res.data
   }

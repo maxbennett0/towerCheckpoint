@@ -16,9 +16,11 @@
         <button @click="filterBy = ''" class="btn btn-warning fw-bold fs-4 p-2">All</button>
       </div>
     </div>
-    <div class="row">
-      <div v-for="e in event" class="col-3 bg-dark text-start border">
-        <EventCard :event="e" />
+    <div class="container-fluid">
+      <div class="row">
+        <div v-for="e in event" class="col-3 bg-dark text-start border">
+          <EventCard :event="e" />
+        </div>
       </div>
     </div>
   </div>

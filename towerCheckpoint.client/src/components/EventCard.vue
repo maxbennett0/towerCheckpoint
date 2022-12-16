@@ -10,7 +10,7 @@
     </div>
     <div class="text-end d-flex justify-content-end">
       <p v-if="event.capacity > 0">{{ event.capacity }} spots left</p>
-      <p v-else="event.capacity > 0"><s>{{ event.capacity }} spots left</s></p>
+      <p v-else><s>{{ event.capacity }} spots left</s></p>
     </div>
   </router-link>
 </template>
