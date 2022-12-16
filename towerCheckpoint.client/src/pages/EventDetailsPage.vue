@@ -4,7 +4,7 @@
       <div class="col-4 p-2">
         <img class="img-fluid border" :src="activeEvent.coverImg" alt="">
       </div>
-      <div class="col-8 p-2">
+      <div class="col-8 p-2 text-start">
         <h3>{{ activeEvent.name }}</h3>
         <h4>{{ activeEvent.location }}</h4>
         <p>{{ activeEvent.description }}</p>
