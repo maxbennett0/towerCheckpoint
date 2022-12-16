@@ -21,6 +21,12 @@ class EventsService {
     AppState.events.push(res.data)
     return res.data
   }
+
+  async removeEvent(eventId) {
+    const res = await api.delete('api/events/' + eventId)
+    logger.log('deleting event')
+    AppState.events = AppState.events.filter(e => e.id !== eventId)
+  }
 }
 
 export const eventsService = new EventsService()

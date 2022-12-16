@@ -6,8 +6,9 @@
       <div>
         {{ comment.body }}
       </div>
-      <div class="text-end"><i class="mdi mdi-delete selectable text-danger fs-3"
-          @click="removeComment(comment.id)"></i></div>
+      <div v-if="comment.creator.id == account.id" class="text-end"><i
+          class="mdi mdi-delete selectable text-danger fs-3" @click="removeComment(comment.id)"></i>
+      </div>
     </h6>
   </div>
 </template>
@@ -26,12 +27,17 @@ export default {
   },
   setup() {
     return {
+
+      account: computed(() => AppState.account),
+
       async removeComment(commentId) {
-        try {
-          await commentsService.removeComment(commentId)
-        } catch (error) {
-          logger.error(error)
-          Pop.error(error.message)
+        if (await Pop.confirm('Delete?', 'ahahaha your comment is so sexy, dont delete it...')) {
+          try {
+            await commentsService.removeComment(commentId)
+          } catch (error) {
+            logger.error(error)
+            Pop.error(error.message)
+          }
         }
       }
     }

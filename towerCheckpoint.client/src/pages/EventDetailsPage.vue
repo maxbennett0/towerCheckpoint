@@ -25,6 +25,11 @@
             <button v-else-if="foundMe" class="btn btn-danger" @click="removeTicket(foundMe.id)">Remove Ticket<i
                 class="mdi mdi-ticket mx-2"></i></button>
 
+            <button v-if="activeEvent.creator.id == account.id" id="cancel-button" class="btn btn-danger"
+              @click="removeEvent(activeEvent.id)"><i class="mdi mdi-cancel"></i>
+              Cancel
+              Event</button>
+
           </div>
         </div>
       </div>
@@ -32,9 +37,9 @@
     <div class="row align-items-center">
       <div class="col-12 bg-secondary p-3">
         <div>
-          <!-- NOTE v-for tickets somehow -->
-          <img v-for="e in event" class="img-fluid attending-img rounded-circle" :title=activeEvent.creator.name
-            :src=activeEvent.creator.picture alt="">
+          <p class="text-info fw-bold">See Who's Attending</p>
+          <img v-for="t in tickets" class="img-fluid attending-img rounded-circle" :title=t.profile.name
+            :src=t.profile.picture alt="">
         </div>
       </div>
     </div>
@@ -42,7 +47,7 @@
       <div class="col-8 mt-4 p-3 bg-secondary">
         <div class="row">
           <div class="col-12 p-3">
-            <p class="text-end text-success mx-2">Join The Conversation</p>
+            <p class="text-end text-success mx-2 fw-bold">Join The Conversation</p>
             <textarea v-model="editable.body" type="text" name="body" id="body" cols="129" rows="5"
               placeholder="Tell the people..."></textarea>
           </div>
@@ -70,12 +75,15 @@ import { eventsService } from "../services/EventsService.js";
 import { ticketsService } from '../services/TicketsService.js'
 import { commentsService } from '../services/CommentsService.js'
 import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import CommentComponent from "../components/CommentComponent.vue";
 
 export default {
   setup() {
     const editable = ref({});
     const route = useRoute();
+    const router = useRouter();
+
     async function getEventById() {
       try {
         await eventsService.getEventById(route.params.eventId);
@@ -119,6 +127,9 @@ export default {
       foundMe: computed(() => AppState.tickets.find(t => t.accountId == AppState.account.id)),
       account: computed(() => AppState.account),
       comments: computed(() => AppState.comments),
+      myTickets: computed(() => AppState.myTickets),
+      tickets: computed(() => AppState.tickets),
+
       async attendEvent() {
         try {
           await ticketsService.attendEvent({ eventId: route.params.eventId });
@@ -128,13 +139,23 @@ export default {
           Pop.error(error.message);
         }
       },
-      async removeEvent(ticketId) {
+      async removeTicket(ticketId) {
         try {
           await ticketsService.removeTicket(ticketId);
         }
         catch (error) {
           logger.error(error);
           Pop.error(error.message);
+        }
+      },
+      async removeEvent(eventId) {
+        try {
+          await eventsService.removeEvent(eventId)
+          document.getElementById('cancel-button').disabled = true;
+          router.push({ name: 'Home' })
+        } catch (error) {
+          logger.error(error)
+          Pop.error(error.message)
         }
       },
       async createComment() {

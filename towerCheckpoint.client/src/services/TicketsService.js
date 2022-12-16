@@ -11,7 +11,7 @@ class TicketsService {
     AppState.tickets.push(res.data)
     AppState.myTickets.push(res.data)
     AppState.activeEvent.capacity--
-    logger.log(AppState.activeEvent)
+    logger.log(AppState.myTickets)
   }
   async getTicketsByEventId(eventId) {
     const res = await api.get('api/events/' + eventId + '/tickets')
@@ -30,12 +30,15 @@ class TicketsService {
     }
   }
   async removeTicket(ticketId) {
-    const message = await api.delete('api/tickets/' + ticketId)
-    logger.log(res.data)
-    AppState.tickets = AppState.tickets.filter(t = t.id !== ticketId)
-    AppState.myTickets = AppState.myTickets.filter(t = t.id !== ticketId)
-    AppState.activeEvent.capacity++
-    return message
+    if (await Pop.confirm('Delete?', 'You Sure About This?')) {
+      const res = await api.delete('api/tickets/' + ticketId)
+      logger.log(res.data)
+      AppState.tickets = AppState.tickets.filter(t => t.id !== ticketId)
+      AppState.myTickets = AppState.myTickets.filter(t => t.id !== ticketId)
+      logger.log(AppState.myTickets, AppState.myTickets)
+      AppState.activeEvent.capacity++
+      return res
+    }
   }
 }
 

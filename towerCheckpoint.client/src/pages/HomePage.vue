@@ -3,17 +3,20 @@
     <div class="row">
       <div class="col-12 d-flex cover-img justify-content-start align-items-center border ">
         <div class="mx-3">
-          <h3 class="text-light">Get Ahead Of The Scalpers</h3>
-          <h3 class="text-light">Reserve Your Seat Now</h3>
-          <h3 class="text-light">Real Events For Real People</h3>
+          <h3 class="text-light fw-bold">Get Ahead Of The Scalpers</h3>
+          <h3 class="text-light fw-bold">Reserve Your Seat Now</h3>
+          <h3 class="text-light fw-bold">Real Events For Real People</h3>
         </div>
       </div>
-      <div class="col-12 bg-dark d-flex justify-content-between my-3">
-        <button @click="filterBy = 'concert'" class="btn btn-warning fw-bold fs-4 p-2">Concert</button>
-        <button @click="filterBy = 'convention'" class="btn btn-warning fw-bold fs-4 p-2">Convention</button>
-        <button @click="filterBy = 'sport'" class="btn btn-warning fw-bold fs-4 p-2">Sport</button>
-        <button @click="filterBy = 'digital'" class="btn btn-warning fw-bold fs-4 p-2">Digital</button>
-        <button @click="filterBy = ''" class="btn btn-warning fw-bold fs-4 p-2">All</button>
+      <div class="col-12 bg-dark my-3">
+        <div class="d-flex justify-content-evenly">
+          <button @click="filterBy = 'concert'" class="btn btn-success text-dark fw-bold fs-4 p-2">Concert</button>
+          <button @click="filterBy = 'convention'"
+            class="btn btn-success text-dark fw-bold fs-4 p-2">Convention</button>
+          <button @click="filterBy = 'sport'" class="btn btn-success text-dark fw-bold fs-4 p-2">Sport</button>
+          <button @click="filterBy = 'digital'" class="btn btn-success text-dark fw-bold fs-4 p-2">Digital</button>
+          <button @click="filterBy = ''" class="btn btn-success text-dark fw-bold fs-4 p-2">All</button>
+        </div>
       </div>
     </div>
     <div class="container-fluid">
