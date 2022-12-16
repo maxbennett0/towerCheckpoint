@@ -1,11 +1,14 @@
 <template>
-  <div>
-    <img class="img-fluid rounded-circle comment-img elevation-2" :src="comment.creator.picture" alt="Account Picture">
-    <div class="bg-white elevation-2 mx-3">
-      <h6>
+  <img class="img-fluid rounded-circle comment-img elevation-2" :title="comment.creator.name"
+    :src="comment.creator.picture" alt="Account Picture">
+  <div class="bg-white elevation-2 mx-3 p-3 background-tile">
+    <h6>
+      <div>
         {{ comment.body }}
-      </h6>
-    </div>
+      </div>
+      <div class="text-end"><i class="mdi mdi-delete selectable text-danger fs-3"
+          @click="removeComment(comment.id)"></i></div>
+    </h6>
   </div>
 </template>
 
@@ -15,10 +18,22 @@ import { AppState } from '../AppState';
 import { computed, reactive, onMounted } from 'vue';
 import { useRoute } from "vue-router";
 import { logger } from "../utils/Logger.js";
+import { commentsService } from "../services/CommentsService.js";
 import Pop from "../utils/Pop.js";
 export default {
+  props: {
+    comment: { type: Object, required: true }
+  },
   setup() {
     return {
+      async removeComment(commentId) {
+        try {
+          await commentsService.removeComment(commentId)
+        } catch (error) {
+          logger.error(error)
+          Pop.error(error.message)
+        }
+      }
     }
   }
 };
@@ -26,5 +41,12 @@ export default {
 
 
 <style lang="scss" scoped>
+.comment-img {
+  height: 15vh;
+  width: 15vh;
+}
 
+.background-tile {
+  width: 100%;
+}
 </style>

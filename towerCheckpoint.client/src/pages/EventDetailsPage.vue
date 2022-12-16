@@ -52,6 +52,7 @@
         </div>
         <div class="row">
           <div v-for="c in comments" class="col-12 d-flex my-3">
+            <CommentComponent :comment="c" />
           </div>
         </div>
       </div>
@@ -69,44 +70,48 @@ import { eventsService } from "../services/EventsService.js";
 import { ticketsService } from '../services/TicketsService.js'
 import { commentsService } from '../services/CommentsService.js'
 import { useRoute } from "vue-router";
+import CommentComponent from "../components/CommentComponent.vue";
 
 export default {
   setup() {
-    const editable = ref({})
-    const route = useRoute()
+    const editable = ref({});
+    const route = useRoute();
     async function getEventById() {
       try {
-        await eventsService.getEventById(route.params.eventId)
-      } catch (error) {
-        logger.error(error)
-        Pop.error(error.message)
+        await eventsService.getEventById(route.params.eventId);
+      }
+      catch (error) {
+        logger.error(error);
+        Pop.error(error.message);
       }
     }
     async function getEvents() {
       try {
-        await eventsService.getEvents()
-      } catch (error) {
-        logger.error(error)
-        Pop.error(error.message)
+        await eventsService.getEvents();
+      }
+      catch (error) {
+        logger.error(error);
+        Pop.error(error.message);
       }
     }
     async function getCommentsByEventId() {
       try {
-        await commentsService.getCommentsByEventId(route.params.eventId)
-      } catch (error) {
-        logger.error(error)
-        Pop.error(error.message)
+        await commentsService.getCommentsByEventId(route.params.eventId);
+      }
+      catch (error) {
+        logger.error(error);
+        Pop.error(error.message);
       }
     }
     async function getTicketsByEventId() {
-      await ticketsService.getTicketsByEventId(route.params.eventId)
+      await ticketsService.getTicketsByEventId(route.params.eventId);
     }
     onMounted(() => {
       getEventById(),
         getEvents(),
         getCommentsByEventId(),
-        getTicketsByEventId()
-    })
+        getTicketsByEventId();
+    });
     return {
       editable,
       activeEvent: computed(() => AppState.activeEvent),
@@ -114,35 +119,38 @@ export default {
       foundMe: computed(() => AppState.tickets.find(t => t.accountId == AppState.account.id)),
       account: computed(() => AppState.account),
       comments: computed(() => AppState.comments),
-
       async attendEvent() {
         try {
-          await ticketsService.attendEvent({ eventId: route.params.eventId })
-        } catch (error) {
-          logger.error(error)
-          Pop.error(error.message)
+          await ticketsService.attendEvent({ eventId: route.params.eventId });
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.error(error.message);
         }
       },
       async removeEvent(ticketId) {
         try {
-          await ticketsService.removeTicket(ticketId)
-        } catch (error) {
-          logger.error(error)
-          Pop.error(error.message)
+          await ticketsService.removeTicket(ticketId);
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.error(error.message);
         }
       },
       async createComment() {
         try {
-          editable.value.eventId = route.params.eventId
-          await commentsService.createComment(editable.value)
-          editable.value = {}
-        } catch (error) {
-          logger.error(error)
-          Pop.error(error.message)
+          editable.value.eventId = route.params.eventId;
+          await commentsService.createComment(editable.value);
+          editable.value = {};
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.error(error.message);
         }
       }
-    }
-  }
+    };
+  },
+  components: { CommentComponent }
 };
 </script>
 
@@ -150,10 +158,5 @@ export default {
 <style lang="scss" scoped>
 .attending-img {
   height: 6vh;
-}
-
-.comment-img {
-  height: 15vh;
-  width: 15vh;
 }
 </style>
